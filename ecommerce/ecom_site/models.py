@@ -44,3 +44,8 @@ class Contact(models.Model):
 class Cart(BaseModel):
     user = models.ForeignKey(User, null = True, blank = True, on_delete = models.SET_NULL, related_name = "cart")
     is_paid = models.BooleanField(default = False)
+
+
+class CartItems(BaseModel):
+    cart = models.ForeignKey(Cart, on_delete = models.CASCADE, related_name = "cart_items")
+    product = models.ForeignKey(Product, on_delete = models.CASCADE)

@@ -113,3 +113,12 @@ def contact(request):
     return redirect('/contact/')
     
 
+def add_to_cart(request, product_id):
+    user = request.user
+    product = Product.objects.get(uid = product_id)
+    cart, _ = Cart.objects.get_or_create(user = user, is_paid = False)
+    cart_items = CartItems.objects.create(
+        cart = cart,
+        product = product
+    )
+    return redirect('/')
