@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from .models import *
 from django.contrib import messages
@@ -11,7 +11,7 @@ def index(request):
 
     allproducts = []
 
-    prod_cate = Product.objects.values('category', 'category_id')
+    prod_cate = Product.objects.values('category')  #, 'category_id')
     cates = {item['category'] for item in prod_cate}
     for cate in cates:
         products = Product.objects.filter(category = cate)
@@ -113,12 +113,32 @@ def contact(request):
     return redirect('/contact/')
     
 
-def add_to_cart(request, product_id):
+def add_to_cart(request, uid):
     user = request.user
-    product = Product.objects.get(uid = product_id)
-    cart, _ = Cart.objects.get_or_create(user = user, is_paid = False)
-    cart_items = CartItems.objects.create(
-        cart = cart,
-        product = product
-    )
+    product = Product.objects.get(uid = uid)
+    cart, created = Cart.objects.get_or_create(user = user, is_paid = False)
+    cart_item = CartItem.objects.create(cart = cart, product = product)
     return redirect('/')
+
+
+def cart(request):
+    try:
+        cart = Cart.objects.get(user = request.user)
+    except Cart.DoesNotExist:
+        cart = None
+
+    """response = api.payment_request_create(
+        amount = cart.order_total(),
+        purpose = "Order",
+        buyer_name = request.user.username,
+        email = "gaurav714@gmail.com",
+        redirect_url = "http://127.0.0.1:8000/success/"
+    )
+    context = {'cart' : cart, 'payment_url' : response['payment_request']['longurl']}"""
+
+    return render(request, 'cart.html', {'cart' : cart})
+
+
+def remove_cart_item(request, cart_item_uid):
+    CartItem.objects.get(uid = cart_item_uid).delete()
+    return redirect('/cart/')

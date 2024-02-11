@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<section id="hero">
+<div class="container card shadow-lg mt-5">
+    <table class="table" style="text-align:center">
+        <thead>
+            <tr>
+                <th scope="col">Sr.No.</th>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Qty</th>
+                <th scope="col">Total</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if request.user.is_authenticated %}
+                {% for item in cart.cart_item.all %}
+                <tr>
+                    <td>{{ forloop.counter }}.</td>
+                    <td><img src="/media/{{ item.product.image }}" style="height:50px; width:50px"></td>
+                    <td>{{ item.product.product_name }}</td>
+                    <td>{{ item.product.price }}</td>
+                    <td>1</td>
+                    <td>{{ item.product.price }}</td>
+                    <td><a href="{% url 'remove_cart_item' item.uid %}" class="btn btn-outline-dark"><i class="fa-solid fa-trash-can"></i></a></td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <b>Grand Total : {{ cart.order_total }}</b> <br>
+                    </td>
+                    <td></td> <!-- Add empty cell for consistency -->
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">Please log in to view your cart.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+</section>
+{% endblock body %}

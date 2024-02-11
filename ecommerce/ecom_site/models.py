@@ -1,10 +1,10 @@
 from django.db import models
-import uuid
+from uuid import uuid4
 from django.contrib.auth.models import User
 
 
 class BaseModel(models.Model):
-    uid = models.UUIDField(default = uuid.uuid4, editable = False, primary_key = True)
+    uid = models.UUIDField(default = uuid4, editable = False, primary_key = True)
     created_at = models.DateField(auto_now_add = True)
     updated_at = models.DateField(auto_now_add = True)
 
@@ -20,7 +20,7 @@ class ProductCategory(BaseModel):
     
 
 class Product(BaseModel):
-    product_id = models.AutoField
+    #product_id = models.UUIDField(default = uuid4, editable = False)
     category = models.ForeignKey(ProductCategory, on_delete = models.CASCADE, related_name = 'product', default = "")
     product_name = models.CharField(max_length = 100)
     desc = models.TextField(max_length = 300)
@@ -46,6 +46,7 @@ class Cart(BaseModel):
     is_paid = models.BooleanField(default = False)
 
 
-class CartItems(BaseModel):
-    cart = models.ForeignKey(Cart, on_delete = models.CASCADE, related_name = "cart_items")
+class CartItem(BaseModel):
+    cart = models.ForeignKey(Cart, on_delete = models.CASCADE, related_name = "cart_item")
     product = models.ForeignKey(Product, on_delete = models.CASCADE)
+    

@@ -30,28 +30,24 @@
         <h3>Check Our <span>Products</span></h3>
       </div>     
       
-      {% for product, range, ncards in allproducts %}
+      {% for products, range, ncards in allproducts %}
       <h3 class="my-3 py-3 text-center text-success bg-light">
-        <b>{{ product.0.category }} Flashsale</b>
+        <b>{{ products.0.category }} Flashsale</b>
       </h3>
 
       <div class="container">
         <div class="row">
-          {% for i in product %}
+          {% for item in products %}
           <div class="col-md-3 mt-3">
-            <img src="/media/{{ i.image }}" alt="Not Found" class="card-img-top" height="275px" width="150">
+            <img src="/media/{{ item.image }}" alt="Product Image" class="card-img-top" height="275px" width="150">
             <div class="card-body bg-light mt-2"> <br>
-              <h5 class="card-title mx-2" id="namepr{{ i.product_id }}"><b>{{ i.product_name }}</b></h5>
-              <p class="card-text mx-2">{{ i.desc | slice:"0:50" }}...</p>
+              <h5 class="card-title mx-2" id="namepr{{ item.uid }}"><b>{{ item.product_name }}</b></h5>
+              <p class="card-text mx-2">{{ item.desc | slice:"0:50" }}...</p>
               <h6 class="card-title mx-2">
-                <b>Price : <span id="pricepr{{ i.product_id }}">₹ {{ i.price }}</b></span>
+                <b>Price : <span id="pricepr{{ item.uid }}">₹ {{ item.price }}</b></span>
               </h6>
-              <span id="divpr{{ i.product_id }}" class="divpr">
-                <button id="pr{{ i.product_id }}" class="btn btn-danger cart btn-sm my-3 mx-3 px-3">Add To Cart</button>
-              </span>
-              <a href="/media/{{ i.image }}">
-                <button class="btn btn-dark btn-sm cart my-3 mx-2 px-4">View</button>
-              </a>
+              <a class="btn btn-danger cart btn-sm my-3 mx-3 px-3" href="{% url 'add_to_cart' item.uid %}">Add To Cart</a>
+              <a class="btn btn-dark btn-sm cart my-3 mx-2 px-4" href="">View</a>
             </div>
           </div>
           {% endfor %}

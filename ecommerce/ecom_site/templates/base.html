@@ -47,11 +47,11 @@
           <li><a class="nav-link scrollto" href="#contact"><h6><b>Contact</b></h6></a></h6></li>
           {% if request.user.is_authenticated %}
             <li><a class="nav-link scrollto" href="{% url 'signout' %}"><h6><b>Sign Out</b></h6></a></li>
+            <li><a class="nav-link scrollto" href="{% url 'cart' %}"><h6><b>Cart ( {{ cart.cart_item.count }} )</b></h6></a></li>
           {% else %}
             <li><a class="nav-link scrollto" href="/signin/"><h6><b>Sign In</b></h6></a></li>
             <li><a class="nav-link scrollto" href="/signup/"><h6><b>Sign Up</b></h6></a></li>
           {% endif %}
-          <li><a class="nav-link scrollto" href="#cart"><h6><b>Cart</b></h6></a></li>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
 
